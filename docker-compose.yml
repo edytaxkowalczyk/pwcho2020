@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  Full2020-85741:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_USER: EKowalczyk
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: EKowalczyk
+      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: test
+    container_name: Full2020-85741
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    networks:
+      Bridge-Zadanie-1:
+        ipv4_address: 10.0.10.3
+  javacontainer:
+    build:
+      context: ./
+    restart: on-failure
+    container_name: javacontainer
+    stdin_open: true
+    tty: true
+    depends_on:
+      - Full2020-85741
+    networks:
+      - Bridge-Zadanie-1
+networks:
+  Bridge-Zadanie-1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.10.0/24
